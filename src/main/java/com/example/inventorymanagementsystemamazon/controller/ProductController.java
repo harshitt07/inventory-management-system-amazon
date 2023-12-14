@@ -5,6 +5,8 @@ import com.example.inventorymanagementsystemamazon.request.CreateProductRequest;
 import com.example.inventorymanagementsystemamazon.service.ProductService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.apache.catalina.connector.Response;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -27,8 +29,8 @@ public class ProductController {
     }
 
     @PatchMapping("/{productId}")
-    public void updateProduct(@PathVariable String productId, @RequestBody CreateProductRequest createProductRequest) {
-        productService.updateProduct(productId, createProductRequest);
+    public ResponseEntity<Product> updateProduct(@PathVariable String productId, @RequestBody CreateProductRequest createProductRequest) {
+        return ResponseEntity.ok(productService.updateProduct(productId, createProductRequest));
     }
 
     @DeleteMapping("/{productId}")

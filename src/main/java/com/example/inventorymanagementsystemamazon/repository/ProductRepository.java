@@ -1,6 +1,7 @@
 package com.example.inventorymanagementsystemamazon.repository;
 
 import com.example.inventorymanagementsystemamazon.entity.Product;
+import com.example.inventorymanagementsystemamazon.request.CreateProductRequest;
 import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;
@@ -21,6 +22,30 @@ public class ProductRepository {
     public Product findById(String productId) {
         if(map.containsKey(productId)) {
             return map.get(productId);
+        }
+        return null;
+    }
+
+    public Product updateProduct(String productId, CreateProductRequest createProductRequest) {
+        Product product = findById(productId);
+        if(product != null) {
+            if(createProductRequest.getQuantity() != null) {
+                product.setQuantity(createProductRequest.getQuantity());
+            }
+            if(createProductRequest.getPrice() != null) {
+                product.setPrice(createProductRequest.getPrice());
+            }
+            if(createProductRequest.getName() != null) {
+                product.setName(createProductRequest.getName());
+            }
+            if(createProductRequest.getCategory() != null) {
+                product.setCategory(createProductRequest.getCategory());
+            }
+            if(createProductRequest.getBrand() != null) {
+                product.setBrand(createProductRequest.getBrand());
+            }
+            map.put(productId, product);
+            return product;
         }
         return null;
     }
