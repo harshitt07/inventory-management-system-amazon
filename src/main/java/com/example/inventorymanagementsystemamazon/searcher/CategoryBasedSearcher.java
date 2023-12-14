@@ -9,12 +9,12 @@ import java.util.List;
 
 @Component
 @RequiredArgsConstructor
-public class NameBasedSearcher implements Searcher {
+public class CategoryBasedSearcher implements Searcher {
 
     private final ProductRepository productRepository;
 
     @Override
-    public List<Product> search(String name) {
-        return productRepository.searchByProductName(name);
+    public List<Product> search(String category) {
+        return productRepository.searchByCategory(category);
     }
 }
