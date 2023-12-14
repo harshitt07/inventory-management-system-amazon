@@ -6,11 +6,17 @@ import com.example.inventorymanagementsystemamazon.request.CreateProductRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 @RequiredArgsConstructor
 public class ProductService {
 
     private final ProductRepository productRepository;
+
+    public List<Product> getAllProduct() {
+        return productRepository.getAllProduct();
+    }
 
     public Product addProduct(CreateProductRequest createProductRequest) {
         Product product = Product.builder()

@@ -1,8 +1,7 @@
 package com.example.inventorymanagementsystemamazon.controller;
 
 import com.example.inventorymanagementsystemamazon.entity.Product;
-import com.example.inventorymanagementsystemamazon.searcher.NameBasedSearcher;
-import com.example.inventorymanagementsystemamazon.searcher.Searcher;
+import com.example.inventorymanagementsystemamazon.entity.SearchCriteria;
 import com.example.inventorymanagementsystemamazon.service.SearchService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -21,17 +20,17 @@ public class SearchController {
 
     @GetMapping("/productName/{productName}")
     public List<Product> searchByName(@PathVariable String productName) {
-        return searchService.search();
+        return searchService.search(productName, SearchCriteria.NAME);
     }
 
-    @GetMapping("/category")
+    @GetMapping("/category/{category}")
     public List<Product> searchByCategory(@PathVariable String category) {
-        return null;
+        return searchService.search(category, SearchCriteria.CATEGORY);
     }
 
-    @GetMapping("/brand")
+    @GetMapping("/brand/{brand}")
     public List<Product> searchByBrand(@PathVariable String brand) {
-        return null;
+        return searchService.search(brand, SearchCriteria.BRAND);
     }
 
 }
