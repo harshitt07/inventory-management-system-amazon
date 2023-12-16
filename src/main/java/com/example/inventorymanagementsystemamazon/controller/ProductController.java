@@ -1,8 +1,10 @@
 package com.example.inventorymanagementsystemamazon.controller;
 
 import com.example.inventorymanagementsystemamazon.entity.Product;
+import com.example.inventorymanagementsystemamazon.exception.UnauthorizedRequestException;
 import com.example.inventorymanagementsystemamazon.request.CreateProductRequest;
 import com.example.inventorymanagementsystemamazon.service.ProductService;
+import com.example.inventorymanagementsystemamazon.service.ValidationService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.apache.catalina.connector.Response;
@@ -17,25 +19,30 @@ import java.util.List;
 public class ProductController {
 
     private final ProductService productService;
+    private final ValidationService validationService;
 
     @GetMapping
-    public List<Product> getAllProduct() {
-        return productService.getAllProduct();
+    public List<Product> getAllProduct(@RequestHeader(value = "authorization", required = true) String token) throws Exception {
+        if(validationService.validatedToken(token)) return productService.getAllProduct();
+        throw new UnauthorizedRequestException("Request is not authenticated!");
     }
 
     @PostMapping
-    public Product addProduct(@RequestBody @Valid CreateProductRequest createProductRequest) {
-        return productService.addProduct(createProductRequest);
+    public Product addProduct(@RequestHeader(value = "authorization", required = true) String token, @RequestBody @Valid CreateProductRequest createProductRequest) throws Exception {
+        if(validationService.validatedToken(token)) return productService.addProduct(createProductRequest);
+        throw new UnauthorizedRequestException("Request is not authenticated!");
     }
 
     @PatchMapping("/{productId}")
-    public ResponseEntity<Product> updateProduct(@PathVariable String productId, @RequestBody CreateProductRequest createProductRequest) {
-        return ResponseEntity.ok(productService.updateProduct(productId, createProductRequest));
+    public ResponseEntity<Product> updateProduct(@RequestHeader(value = "authorization", required = true) String token, @PathVariable String productId, @RequestBody CreateProductRequest createProductRequest) throws Exception {
+        if(validationService.validatedToken(token)) return ResponseEntity.ok(productService.updateProduct(productId, createProductRequest));
+        throw new UnauthorizedRequestException("Request is not authenticated!");
     }
 
     @DeleteMapping("/{productId}")
-    public void deleteProduct(@PathVariable String productId) {
-        productService.deleteProduct(productId);
+    public void deleteProduct(@RequestHeader(value = "authorization", required = true) String token, @PathVariable String productId) throws Exception {
+        if(validationService.validatedToken(token)) productService.deleteProduct(productId);
+        throw new UnauthorizedRequestException("Request is not authenticated!");
     }
 
 }
