@@ -1,7 +1,6 @@
 package com.example.inventorymanagementsystemamazon.repository;
 
 import com.example.inventorymanagementsystemamazon.entity.Product;
-import com.example.inventorymanagementsystemamazon.observer.ProductObserver;
 import com.example.inventorymanagementsystemamazon.request.CreateProductRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
@@ -15,13 +14,11 @@ import java.util.List;
 public class ProductRepository {
 
     HashMap<String, Product> map = new HashMap<>();
-    private final ProductObserver productObserver;
 
     public Product save(Product product) {
         String productId = String.valueOf(map.size());
         product.setId(productId);
         map.put(productId, product);
-        productObserver.update(product);
         return map.get(productId);
     }
 
